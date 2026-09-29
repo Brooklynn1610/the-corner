@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>The Corner - Order</title>
     <!-- Import font Lora cho phần mô tả -->
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap" rel="stylesheet">
@@ -27,10 +27,7 @@
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
             background-image: url('24B554A1-0953-431E-8693-E3DF3DF815BD.PNG');
             background-size: cover;
             background-position: center;
@@ -49,11 +46,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px; /* Khoảng cách giữa logo và chữ */
+            gap: 15px;
         }
 
         .shop-logo {
-            width: 80px; /* Bạn có thể tăng giảm số này để đổi kích thước logo */
+            width: 80px;
             height: auto;
         }
 
@@ -97,8 +94,10 @@
             transition: transform 0.2s;
         }
 
-        .menu-item:hover {
-            transform: translateY(-5px);
+        @media (hover: hover) {
+            .menu-item:hover {
+                transform: translateY(-5px);
+            }
         }
 
         .item-image {
@@ -244,7 +243,7 @@
             background-color: white;
             width: 90%;
             max-width: 400px;
-            border-radius: 0; 
+            border-radius: 0;
             padding: 30px;
             max-height: 80vh;
             overflow-y: auto;
@@ -333,6 +332,59 @@
         .venmo-btn:hover {
             background-color: #0073d1;
         }
+
+        /* ===== Phone layout ===== */
+        button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        .modal-content { overscroll-behavior: contain; }
+
+        @media (max-width: 599px) {
+            body {
+                padding: 28px 16px calc(110px + env(safe-area-inset-bottom));
+            }
+            .header { margin-bottom: 28px; }
+            .header-title-wrap {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .shop-logo { width: 96px; }
+            .header h1 {
+                font-size: clamp(2.4rem, 13vw, 3.2rem);
+                letter-spacing: -1px;
+            }
+            .header p { font-size: 1rem; margin-top: 8px; }
+
+            .menu-container { gap: 20px; }
+            .item-image { height: 170px; }
+            .item-details { padding: 14px; gap: 12px; }
+            .item-text-group { max-width: none; flex: 1; min-width: 0; }
+            .item-desc { font-size: 0.9rem; }
+
+            /* nút bấm to hơn cho ngón tay */
+            .qty-control-row { gap: 12px; }
+            .qty-btn { width: 42px; height: 42px; font-size: 1.4rem; }
+            .qty-display { font-size: 1.15rem; min-width: 24px; }
+
+            .cart-float-btn {
+                width: 60px; height: 60px;
+                right: 16px;
+                bottom: calc(20px + env(safe-area-inset-bottom));
+            }
+
+            /* giỏ hàng trượt lên từ dưới màn hình */
+            .modal-overlay { align-items: flex-end; }
+            .modal-content {
+                width: 100%;
+                max-width: none;
+                max-height: 85vh;
+                max-height: 85dvh;
+                padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
+                border-radius: 18px 18px 0 0;
+            }
+            .modal-header h2 { font-size: 1.3rem; }
+            .close-btn { width: 44px; height: 44px; }
+            .modal-total { font-size: 1.25rem; margin-top: 12px; margin-bottom: 20px; padding-top: 16px; }
+            .venmo-btn { padding: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -347,7 +399,7 @@
     </div>
 
     <div class="menu-container">
-        
+
         <!-- Item 1 -->
         <div class="menu-item">
             <div class="item-image"></div>
@@ -517,7 +569,7 @@
                 <h2>YOUR CART</h2>
                 <button class="close-btn" onclick="closeCartModal()">×</button>
             </div>
-            
+
             <div id="order-summary-list">
             </div>
 
@@ -574,11 +626,11 @@
 
             const cartBtn = document.getElementById('cart-float-btn');
             const cartBadge = document.getElementById('cart-badge');
-            
+
             if (totalQty > 0) {
                 cartBtn.style.display = 'flex';
                 cartBadge.innerText = totalQty;
-                
+
                 document.getElementById('order-summary-list').innerHTML = summaryHTML;
                 document.getElementById('modal-total-price').innerText = totalPrice;
 
@@ -597,13 +649,6 @@
 
         function closeCartModal() {
             document.getElementById('cart-modal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            let modal = document.getElementById('cart-modal');
-            if (event.target == modal) {
-                closeCartModal();
-            }
         }
     </script>
 </body>
